@@ -49,8 +49,8 @@ pipeline {
                     artifacts: [
                         [artifactId: 'catalouge',
                         classifier: '',
-                        file: 'catalouge-' + version + '.jar',
-                        type: 'jar']
+                        file: 'catalouge.zip',
+                        type: 'zip']
                     ]
                 )
             }
