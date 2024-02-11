@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         packageVersion = ''
+        nexusURL='172.31.82.56:8081'
     }
 
     stages {
@@ -20,26 +21,45 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
-              sh """
+                sh '''
               npm install
-              """
+              '''
             }
         }
 
         stage('Build') {
             steps {
-                sh """
+                sh '''
                   ls -la
                   zip -q -r catalouge.zip ./* -x ".zip" -x "*.git"
-
-                """
+                  ls -lrt
+                '''
+            }
+        }
+        stage('Publish-Artifact') {
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "$nexusURL",
+                    groupId: 'com.roboshop',
+                    version: "$packageVersion",
+                    repository: 'catalouge',
+                    credentialsId: 'Nexus-Auth',
+                    artifacts: [
+                        [artifactId: 'catalouge',
+                        classifier: '',
+                        file: 'catalouge-' + version + '.jar',
+                        type: 'jar']
+                    ]
+                )
             }
         }
     }
     post {
         always {
             echo 'will run always'
-           
+            deleteDir()
         }
     }
 }
