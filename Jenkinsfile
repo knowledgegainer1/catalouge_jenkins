@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         packageVersion = ''
-        nexusURL = '172.31.82.56:8081'
+        nexusURL = '3.91.179.96:8081'
     }
 
     stages {
