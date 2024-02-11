@@ -30,13 +30,16 @@ pipeline {
             steps {
                 sh """
                   ls -la
+                  zip -q -r catalouge.zip ./* -x ".zip" -x "*.git"
+
                 """
             }
         }
     }
     post {
         always {
-            echo 'will run'
+            echo 'will run always'
+            deleteDir()
         }
     }
 }
