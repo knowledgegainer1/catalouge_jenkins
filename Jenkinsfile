@@ -18,16 +18,18 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Install dependencies') {
             steps {
-                echo 'Testing....'
+              sh """
+              npm install
+              """
             }
         }
 
-        stage('Deploy') {
+        stage('Build') {
             steps {
                 sh """
-                   echo 'here is hell'
+                  ls -la
                 """
             }
         }
