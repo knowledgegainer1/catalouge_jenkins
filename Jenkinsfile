@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         packageVersion = ''
-        nexusURL='172.31.82.56:8081'
+        nexusURL = '172.31.82.56:8081'
     }
 
     stages {
@@ -47,7 +47,7 @@ pipeline {
                     repository: 'catalouge',
                     credentialsId: 'Nexus-Auth',
                     artifacts: [
-                        [artifactId: 'catalouge',
+                        [artifactId: 'cataloge',
                         classifier: '',
                         file: 'catalouge.zip',
                         type: 'zip']
