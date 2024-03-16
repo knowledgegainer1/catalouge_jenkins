@@ -5,61 +5,58 @@ pipeline {
         }
     }
     environment {
-        packageVersion = ''
-        nexusURL = '3.91.179.96:8081'
+           packageVersion=''
     }
-
+   
     stages {
-        stage('Get the version') {
+        stage('Get the vesrion') {
             steps {
-                script {
-                    def packageJson = readJSON file:'package.json'
-                    packageVersion = packageJson.version
-                    echo "version is $packageVersion"
-                }
-            }
-        }
-        stage('Install dependencies') {
-            steps {
-                sh '''
-              npm install
-              '''
-            }
-        }
+               script{
+                def packageJson = readJSON file: 'package.json'
+                def packageVersion = packageJson.version
 
-        stage('Build') {
-            steps {
-                sh '''
-                  ls -la
-                  zip -q -r catalouge.zip ./* -x ".zip" -x "*.git"
-                  ls -lrt
-                '''
+               }
             }
         }
-        stage('Publish-Artifact') {
+        stage('Test') {
             steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: "$nexusURL",
-                    groupId: 'com.roboshop',
-                    version: "$packageVersion",
-                    repository: 'catalouge',
-                    credentialsId: 'Nexus-Auth',
-                    artifacts: [
-                        [artifactId: 'cataloge',
-                        classifier: '',
-                        file: 'catalouge.zip',
-                        type: 'zip']
-                    ]
-                )
+                sh """
+                echo 'Testing....'
+                """
+            }
+        }
+        stage('Example') {
+            steps {
+                sh """
+                echo "Hello ${params.PERSON}"
+
+                echo "Biography: ${params.BIOGRAPHY}"
+
+                echo "Toggle: ${params.TOGGLE}"
+
+                echo "Choice: ${params.CHOICE}"
+                """
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh """
+                   echo 'here is hell'
+               
+                """
             }
         }
     }
     post {
         always {
             echo 'will run always'
-            deleteDir()
+        }
+        failure {
+            echl "I will run on failuer"
+        }
+        success{
+            echo "I will run on scuuess inly"
         }
     }
 }
+
