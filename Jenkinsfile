@@ -47,7 +47,7 @@ pipeline {
     post {
         always {
             echo 'will run always'
-            deleteDir()
+           /*deleteDir() */
         }
         failure {
             echl "I will run on failuer"
