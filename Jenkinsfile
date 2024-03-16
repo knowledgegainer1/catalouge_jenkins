@@ -19,23 +19,19 @@ pipeline {
                }
             }
         }
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
                 sh """
-                echo 'Testing....'
+                npm install
                 """
             }
         }
-        stage('Example') {
+        stage('Zip') {
             steps {
                 sh """
-                echo "Hello ${params.PERSON}"
-
-                echo "Biography: ${params.BIOGRAPHY}"
-
-                echo "Toggle: ${params.TOGGLE}"
-
-                echo "Choice: ${params.CHOICE}"
+               ls -la
+               zip -q -r catalogue.zip ./* -x "*.git" -x "*.zip"
+               ls -la
                 """
             }
         }
@@ -51,6 +47,7 @@ pipeline {
     post {
         always {
             echo 'will run always'
+            deleteDir()
         }
         failure {
             echl "I will run on failuer"
