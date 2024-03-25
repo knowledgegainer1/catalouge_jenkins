@@ -1,11 +1,13 @@
 pipeline {
-    agent {
-        node {
-            label 'AGENT-1' // Corrected syntax: 'label' instead of '='
-        }
-    }
+    agent any 
+    // {
+    //     node {
+    //         label 'AGENT-1' // Corrected syntax: 'label' instead of '='
+    //     }
+    // }
     environment {
            packageVersion=''
+           nexusurl='3.82.112.33:8081'
     }
    
     stages {
@@ -37,10 +39,21 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh """
-                   echo 'here is hell'
-               
-                """
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusurl}",
+                    groupId: 'com.roboshop',
+                    version: "${packageVersion}",
+                    repository: 'catalogue',
+                    credentialsId: 'nexusid',# give cred in jenkins crdenials
+                    artifacts: [
+                        [artifactId: catalogue,
+                        classifier: '',
+                        file: catalogue.zip,
+                        type: 'zip']
+                        ]
+                )
             }
         }
     }
