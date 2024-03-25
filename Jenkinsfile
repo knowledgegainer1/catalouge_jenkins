@@ -3,7 +3,7 @@ pipeline {
     // {
     //     node {
     //         label 'AGENT-1' // Corrected syntax: 'label' instead of '='
-    //     }
+    //     }# give cred in jenkins crdenials
     // }
     environment {
            packageVersion=''
@@ -46,7 +46,7 @@ pipeline {
                     groupId: 'com.roboshop',
                     version: "${packageVersion}",
                     repository: 'catalogue',
-                    credentialsId: 'nexusid',# give cred in jenkins crdenials
+                    credentialsId: 'nexusid',
                     artifacts: [
                         [artifactId: catalogue,
                         classifier: '',
